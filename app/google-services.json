@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "500938763728",
+    "project_id": "dim-sum-detection",
+    "storage_bucket": "dim-sum-detection.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:500938763728:android:0347c03cbad9ec1f011dd5",
+        "android_client_info": {
+          "package_name": "com.example.dimsumdetection"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "500938763728-sl4qhbti5eg3nhob0p1kq1fopm0epq0j.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCKz-sKz21ulB4_3gjKfTGO-74dlmlPNlU"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "500938763728-sl4qhbti5eg3nhob0p1kq1fopm0epq0j.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
