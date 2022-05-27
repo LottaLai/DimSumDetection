@@ -7,54 +7,40 @@ import androidx.biometric.BiometricManager;
 import androidx.biometric.BiometricPrompt;
 import androidx.core.content.ContextCompat;
 
+import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
 import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.android.gms.auth.api.signin.GoogleSignIn;
+import com.google.android.gms.auth.api.signin.GoogleSignInClient;
+import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
+import com.google.firebase.auth.FirebaseAuth;
+
 import java.util.concurrent.Executor;
 
 public class MainActivity extends AppCompatActivity {
-    private Executor executor;
-    private BiometricPrompt biometricPrompt;
-    private BiometricPrompt.PromptInfo promptInfo;
+    private Button signout;
+    private GoogleSignInClient mGoogleSignInClient;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        executor = ContextCompat.getMainExecutor(this);
-        biometricPrompt = new BiometricPrompt(MainActivity.this, executor, new BiometricPrompt.AuthenticationCallback() {
-            @Override
-            public void onAuthenticationError(int errorCode, @NonNull CharSequence errString) {
-                super.onAuthenticationError(errorCode, errString);
-            }
-
-
-            @Override
-            public void onAuthenticationSucceeded(@NonNull BiometricPrompt.AuthenticationResult result) {
-                super.onAuthenticationSucceeded(result);
-                Toast.makeText(getApplicationContext(), "Authentication succeeded!", Toast.LENGTH_SHORT).show();
-            }
-
-            @Override
-            public void onAuthenticationFailed() {
-                super.onAuthenticationFailed();
-                Toast.makeText(getApplicationContext(), "Authentication failed", Toast.LENGTH_SHORT).show();
-            }
-        });
-
-        promptInfo = new BiometricPrompt.PromptInfo.Builder()
-                .setTitle("Biometric login for my app")
-                .setSubtitle("Log in using your biometric credential")
-                .setNegativeButtonText("Use account password")
+        //Sign out Google account option
+        GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
+                .requestIdToken(getString(R.string.default_web_client_id))
+                .requestEmail()
                 .build();
+        mGoogleSignInClient= GoogleSignIn.getClient(this, gso);
 
-        Button biometricLoginButton = findViewById(R.id.biometric_login);
-        biometricLoginButton.setOnClickListener(view -> {
-            System.out.println("Clicked");
-            biometricPrompt.authenticate(promptInfo);
+        signout = findViewById(R.id.signout);
+        signout.setOnClickListener(view -> {
+            mGoogleSignInClient.signOut();
+            Intent intent = new Intent(this, LoginActivity.class);
+            startActivity(intent);
         });
 
     }
@@ -68,15 +54,19 @@ public class MainActivity extends AppCompatActivity {
                 BiometricManager.Authenticators.DEVICE_CREDENTIAL)) {
             case BiometricManager.BIOMETRIC_SUCCESS:
                 biometricStatusTextView.setText("App can authenticate using biometrics.");
+                Toast.makeText(getApplicationContext(), "App can authenticate using biometrics.", Toast.LENGTH_SHORT).show();
                 break;
             case BiometricManager.BIOMETRIC_ERROR_NO_HARDWARE:
                 biometricStatusTextView.setText("No biometric features available on this device.");
+                Toast.makeText(getApplicationContext(), "No biometric features available on this device.", Toast.LENGTH_SHORT).show();
                 break;
             case BiometricManager.BIOMETRIC_ERROR_HW_UNAVAILABLE:
                 biometricStatusTextView.setText("Biometric features are currently unavailable.");
+                Toast.makeText(getApplicationContext(), "Biometric features are currently unavailable.", Toast.LENGTH_SHORT).show();
                 break;
             case BiometricManager.BIOMETRIC_ERROR_NONE_ENROLLED:
                 biometricStatusTextView.setText("Biometric features are not enrolled.");
+                Toast.makeText(getApplicationContext(), "Biometric features are not enrolled.", Toast.LENGTH_SHORT).show();
                 break;
         }
     }
