@@ -54,9 +54,9 @@ public class RegisterActivity extends AppCompatActivity {
 
     }
 
-    private void register(String email, String password){
+    private void register(String email, String password) {
         mAuth.createUserWithEmailAndPassword(email, password).addOnCompleteListener(task -> {
-            if(task.isSuccessful()){
+            if (task.isSuccessful()) {
                 Intent intent = new Intent(this, MainActivity.class);
                 startActivity(intent);
                 finish();

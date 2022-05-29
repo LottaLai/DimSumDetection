@@ -58,7 +58,7 @@ public class LoginActivity extends AppCompatActivity {
         editTextPassword = findViewById(R.id.editTextPassword);
 
         Boolean isLogin = sharedPreferences.getBoolean("isLogin", false);
-        if(isLogin){
+        if (isLogin) {
             email = sharedPreferences.getString("email", "");
             password = sharedPreferences.getString("password", "");
             editTextEmailAddress.setText(email);
@@ -67,9 +67,9 @@ public class LoginActivity extends AppCompatActivity {
 
         buttonLogin = findViewById(R.id.buttonLogin);
         buttonLogin.setOnClickListener(view -> {
-            if(isLogin == true) {
+            if (isLogin == true) {
                 biometricPrompt.authenticate(promptInfo);
-            }else {
+            } else {
                 email = editTextEmailAddress.getText().toString();
                 password = editTextPassword.getText().toString();
 
@@ -118,7 +118,7 @@ public class LoginActivity extends AppCompatActivity {
                 .requestIdToken(getString(R.string.default_web_client_id))
                 .requestEmail()
                 .build();
-        mGoogleSignInClient= GoogleSignIn.getClient(this, gso);
+        mGoogleSignInClient = GoogleSignIn.getClient(this, gso);
 
         signInGoogle = findViewById(R.id.signinGoogle);
         signInGoogle.setOnClickListener(view -> {
@@ -130,7 +130,7 @@ public class LoginActivity extends AppCompatActivity {
     @Override
     public void onStart() {
         super.onStart();
-        if(GoogleSignIn.getLastSignedInAccount(this) != null){
+        if (GoogleSignIn.getLastSignedInAccount(this) != null) {
             Intent intent = new Intent(this, MainActivity.class);
             startActivity(intent);
             finish();
@@ -140,25 +140,25 @@ public class LoginActivity extends AppCompatActivity {
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        if(requestCode == 123){
+        if (requestCode == 123) {
             Task<GoogleSignInAccount> task = GoogleSignIn.getSignedInAccountFromIntent(data);
             handleResult(task);
         }
     }
 
     private void handleResult(@NonNull Task<GoogleSignInAccount> task) {
-        try{
+        try {
             GoogleSignInAccount account = task.getResult(ApiException.class);
             FirebaseAuthWithGoogle(account);
-        }catch (ApiException e){
-            Toast.makeText(this,e.toString(),Toast.LENGTH_SHORT).show();
+        } catch (ApiException e) {
+            Toast.makeText(this, e.toString(), Toast.LENGTH_SHORT).show();
         }
     }
 
-    private void FirebaseAuthWithGoogle(GoogleSignInAccount account){
+    private void FirebaseAuthWithGoogle(GoogleSignInAccount account) {
         AuthCredential credential = GoogleAuthProvider.getCredential(account.getIdToken(), null);
         mAuth.signInWithCredential(credential).addOnCompleteListener(task -> {
-            if(task.isSuccessful()){
+            if (task.isSuccessful()) {
                 SavePreference.SetEmail(this, account.getEmail());
                 SavePreference.SetUsername(this, account.getDisplayName());
 
@@ -167,12 +167,13 @@ public class LoginActivity extends AppCompatActivity {
             }
         }).addOnFailureListener(exception -> {
             Toast.makeText(getApplicationContext(), exception.getLocalizedMessage(), Toast.LENGTH_LONG).show();
-        });;
+        });
+        ;
     }
 
-    private void PeformAuth(String email, String password){
+    private void PeformAuth(String email, String password) {
         mAuth.signInWithEmailAndPassword(email, password).addOnCompleteListener(task -> {
-            if(task.isSuccessful()){
+            if (task.isSuccessful()) {
                 SharedPreferences.Editor editor = sharedPreferences.edit();
                 editor.putString("email", email);
                 editor.putString("password", password);
