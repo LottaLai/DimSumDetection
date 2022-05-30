@@ -26,7 +26,6 @@ import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
 
 public class AccountFragment extends Fragment {
     private AccountViewModel accountViewModel;
-    private Button signout;
     private GoogleSignInClient mGoogleSignInClient;
     private FragmentAccountBinding binding;
 
@@ -36,18 +35,6 @@ public class AccountFragment extends Fragment {
         return binding.getRoot();
     }
 
-    //    public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-//        accountViewModel = new ViewModelProvider(this).get(AccountViewModel.class);
-//        View root = inflater.inflate(R.layout.fragment_account, container, false);
-//        final TextView textView = root.findViewById(R.id.text_account);
-//        accountViewModel.getText().observe(getViewLifecycleOwner(), new Observer<String>() {
-//            @Override
-//            public void onChanged(@Nullable String s) {
-//                textView.setText(s);
-//            }
-//        });
-//        return root;
-//    }
     @Override
     public void onViewCreated(@Nullable View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
