@@ -23,10 +23,61 @@ public class PostgreSQL {
     private volatile boolean finishFlag;
 
     private ArrayList<DimSum> dimsums = new ArrayList<DimSum>();
+    private Recipe recipe;
+
+    public Thread Select(int reciepeid){
+        return new Thread(new Runnable() {
+            @Override
+            public void run(){
+                try{
+                    Class.forName("org.postgresql.Driver");
+                }catch (ClassNotFoundException e) {
+                    System.out.println(e.getMessage());
+                }
+
+                try {
+                    url = String.format(url, host, port, username);
+                    db = DriverManager.getConnection(url, username, password);
+                    String query = "select * from public.recipe where recipeid = ?";
+                    PreparedStatement pstmt = db.prepareStatement(query);
+                    pstmt.setInt(1, reciepeid);
+                    ResultSet rs = pstmt.executeQuery();
+
+                    while (rs.next()) {
+                        int id = rs.getInt("recipeid");
+                        String name = rs.getString("name");
+                        String imageUrl = rs.getString("imageurl");
+                        recipe = new Recipe(id, name, imageUrl);
+                    }
+                } catch (Exception e) {
+                    System.out.print(e.getMessage());
+                    e.printStackTrace();
+                }
+                finishFlag = true;
+
+                synchronized (this) {
+                    this.notify();
+                }
+            }
+        });
+    }
+
+    public Recipe GetRecipe(){
+        synchronized (this) {
+            if (!finishFlag) {
+                try {
+                    this.wait();
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+            }
+        }
+        return recipe;
+    }
 
     public Thread SelectAll(){
         return new Thread(new Runnable(){
-           @Override
+            @Override
             public void run(){
                try{
                    Class.forName("org.postgresql.Driver");
@@ -46,9 +97,9 @@ public class PostgreSQL {
                        String name = rs.getString("name");
                        String imageUrl = rs.getString("imageurl");
                        String tag = rs.getString("tag");
-                       int rating = rs.getInt("rating");
                        int recipeid = rs.getInt("recipeid");
-                       dimsums.add(new DimSum(id, name, imageUrl, tag, rating, recipeid));
+                       int rating = rs.getInt("rating");
+                       dimsums.add(new DimSum(id, name, imageUrl, tag, recipeid, rating ));
                    }
                } catch (Exception e) {
                    System.out.print(e.getMessage());

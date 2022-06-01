@@ -29,6 +29,6 @@ public class DimSum {
     public String getTag(){
         return tag;
     }
-    public int getRecipeid() { return recipeid; }
+    public int getRecipeId() { return recipeid; }
     public int getRating() { return rating; }
 }

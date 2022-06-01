@@ -26,7 +26,6 @@ public class RecipeFragment extends Fragment {
     private RecyclerView.LayoutManager layoutManager;
     private RecipeRecyclerViewAdapter recyclerViewAdapter;
 
-    private PostgreSQL postgreSQL;
     private ArrayList<DimSum> dimsumList;
 
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -42,16 +41,19 @@ public class RecipeFragment extends Fragment {
         layoutManager = new GridLayoutManager(getActivity(), 2);
         recyclerView = view.findViewById(R.id.recyclerView);
         recyclerView.setLayoutManager(layoutManager);
+
         try {
-            postgreSQL = new PostgreSQL();
+            PostgreSQL postgreSQL = new PostgreSQL();
             Thread thread = new Thread(postgreSQL.SelectAll());
             thread.start();
             TimeUnit.SECONDS.sleep(1);
             dimsumList = postgreSQL.GetDimSums();
-            recyclerViewAdapter = new RecipeRecyclerViewAdapter(dimsumList);
+
+            recyclerViewAdapter = new RecipeRecyclerViewAdapter(getContext(), dimsumList);
 
             recyclerView.setAdapter(recyclerViewAdapter);
             recyclerView.setHasFixedSize(true);
+
         } catch (InterruptedException e) {
             e.printStackTrace();
         }

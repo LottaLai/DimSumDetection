@@ -1,5 +1,6 @@
 package com.example.dimsumdetection.ui.recipe;
 
+import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -13,8 +14,9 @@ import java.util.ArrayList;
 
 public class RecipeRecyclerViewAdapter extends RecyclerView.Adapter<RecipeViewHolder>{
     private ArrayList<DimSum> dimsumList;
-
-    public RecipeRecyclerViewAdapter(ArrayList<DimSum> recipeList) {
+    private Context mContext;
+    public RecipeRecyclerViewAdapter(Context mContext, ArrayList<DimSum> recipeList) {
+        this.mContext = mContext;
         this.dimsumList = recipeList;
     }
 
@@ -29,6 +31,7 @@ public class RecipeRecyclerViewAdapter extends RecyclerView.Adapter<RecipeViewHo
     public void onBindViewHolder(@NonNull RecipeViewHolder holder, int position) {
         holder.setImageView(dimsumList.get(position).getImageUrl());
         holder.setName(dimsumList.get(position).getName());
+        holder.setCardView(mContext, dimsumList.get(position).getRecipeId());
     }
 
     @Override
