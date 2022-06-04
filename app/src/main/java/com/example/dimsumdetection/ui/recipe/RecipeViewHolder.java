@@ -8,11 +8,10 @@ import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.cardview.widget.CardView;
-import androidx.lifecycle.LiveData;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.dimsumdetection.R;
-import com.example.dimsumdetection.RecipeDetail;
+import com.example.dimsumdetection.RecipeDetailActivity;
 import com.squareup.picasso.Picasso;
 
 public class RecipeViewHolder extends RecyclerView.ViewHolder{
@@ -37,7 +36,7 @@ public class RecipeViewHolder extends RecyclerView.ViewHolder{
 
     public void setCardView(Context mContext, int recipeid){
         cardView.setOnClickListener(v -> {
-            Intent intent = new Intent(mContext, RecipeDetail.class);
+            Intent intent = new Intent(mContext, RecipeDetailActivity.class);
             intent.putExtra("RecipeID", recipeid);
             mContext.startActivity(intent);
         });
