@@ -1,4 +1,4 @@
-package com.example.dimsumdetection.database;
+package com.example.dimsumdetection;
 
 import android.content.Context;
 import android.content.SharedPreferences;

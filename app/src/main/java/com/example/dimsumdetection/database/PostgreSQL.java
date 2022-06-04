@@ -1,9 +1,7 @@
 package com.example.dimsumdetection.database;
 
 import com.example.dimsumdetection.ui.recipe.DimSum;
-import com.example.dimsumdetection.ui.recipe.Location;
 import com.example.dimsumdetection.ui.recipe.Recipe;
-import com.example.dimsumdetection.ui.recipe.Restaurant;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
@@ -26,61 +24,8 @@ public class PostgreSQL {
 
     private ArrayList<DimSum> dimsums = new ArrayList<DimSum>();
     private Recipe recipe;
-    private Restaurant restaurant;
 
-    public Thread SelectRestaurant(int restaurantid){
-        return new Thread(new Runnable() {
-            @Override
-            public void run(){
-                try{
-                    Class.forName("org.postgresql.Driver");
-                }catch (ClassNotFoundException e) {
-                    System.out.println(e.getMessage());
-                }
-
-                try {
-                    url = String.format(url, host, port, username);
-                    db = DriverManager.getConnection(url, username, password);
-                    String query = "select * from public.restaurant where restaurantid = ?";
-                    PreparedStatement pstmt = db.prepareStatement(query);
-                    pstmt.setInt(1, restaurantid);
-                    ResultSet rs = pstmt.executeQuery();
-
-                    while (rs.next()) {
-                        int restaurantid = rs.getInt("restaurantid");
-                        String name = rs.getString("name");
-                        String imageUrl = rs.getString("imageurl");
-                        Location location = new Location(rs.getDouble("latitude"), rs.getDouble("longitude"));
-                        int rating = rs.getInt("rating");
-                        restaurant = new Restaurant(restaurantid, name, location, rating, imageUrl);
-                    }
-                } catch (Exception e) {
-                    System.out.print(e.getMessage());
-                    e.printStackTrace();
-                }
-                finishFlag = true;
-
-                synchronized (this) {
-                    this.notify();
-                }
-            }
-        });
-    }
-
-    public Restaurant GetRestaurant(){
-        synchronized (this) {
-            if (!finishFlag) {
-                try {
-                    this.wait();
-                } catch (InterruptedException e) {
-                    e.printStackTrace();
-                }
-            }
-        }
-        return restaurant;
-    }
-
-    public Thread SelectRecipe(int reciepeid){
+    public Thread Select(int reciepeid){
         return new Thread(new Runnable() {
             @Override
             public void run(){
@@ -99,17 +44,10 @@ public class PostgreSQL {
                     ResultSet rs = pstmt.executeQuery();
 
                     while (rs.next()) {
-                        int recipeid = rs.getInt("recipeid");
+                        int id = rs.getInt("recipeid");
                         String name = rs.getString("name");
-                        String equipments = rs.getString("equipments");
-                        String ingredients = rs.getString("ingredients");
                         String imageUrl = rs.getString("imageurl");
-                        String videoUrl = rs.getString("videourl");
-                        String steps_1 = rs.getString("steps_1");
-                        String steps_2 = rs.getString("steps_2");
-                        String steps_3 = rs.getString("steps_3");
-                        int restaurantid = rs.getInt("restaurantid");
-                        recipe = new Recipe(recipeid, name, equipments, ingredients, imageUrl, videoUrl, steps_1, steps_2, steps_3, restaurantid);
+                        recipe = new Recipe(id, name, imageUrl);
                     }
                 } catch (Exception e) {
                     System.out.print(e.getMessage());
