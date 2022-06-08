@@ -8,6 +8,8 @@
     android:layout_margin="5dp"
     app:cardCornerRadius="4dp">
 
+
+
     <LinearLayout
         android:orientation="vertical"
         android:layout_width="match_parent"
@@ -29,4 +31,5 @@
             android:textSize="13sp"
             android:textStyle="bold"/>
     </LinearLayout>
+
 </androidx.cardview.widget.CardView>

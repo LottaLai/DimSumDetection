@@ -1,5 +1,8 @@
 package com.example.dimsumdetection.database;
 
+import android.app.ProgressDialog;
+import android.content.Context;
+
 import com.example.dimsumdetection.ui.recipe.DimSum;
 import com.example.dimsumdetection.ui.recipe.Location;
 import com.example.dimsumdetection.ui.recipe.Recipe;
@@ -14,7 +17,7 @@ import java.sql.Statement;
 import java.util.ArrayList;
 
 public class PostgreSQL {
-    private Connection db = null;
+    private Context context;
     private final int port = 5432;
     private final String host = "tiny.db.elephantsql.com";
     private final String username = "bkijihke";
@@ -28,6 +31,10 @@ public class PostgreSQL {
     private Recipe recipe;
     private Restaurant restaurant;
 
+    public PostgreSQL(Context context){
+        this.context = context;
+    }
+
     public Thread SelectRestaurant(int restaurantid){
         return new Thread(new Runnable() {
             @Override
@@ -40,7 +47,7 @@ public class PostgreSQL {
 
                 try {
                     url = String.format(url, host, port, username);
-                    db = DriverManager.getConnection(url, username, password);
+                    Connection db = DriverManager.getConnection(url, username, password);
                     String query = "select * from public.restaurant where restaurantid = ?";
                     PreparedStatement pstmt = db.prepareStatement(query);
                     pstmt.setInt(1, restaurantid);
@@ -92,7 +99,7 @@ public class PostgreSQL {
 
                 try {
                     url = String.format(url, host, port, username);
-                    db = DriverManager.getConnection(url, username, password);
+                    Connection db = DriverManager.getConnection(url, username, password);
                     String query = "select * from public.recipe where recipeid = ?";
                     PreparedStatement pstmt = db.prepareStatement(query);
                     pstmt.setInt(1, reciepeid);
@@ -137,7 +144,7 @@ public class PostgreSQL {
         return recipe;
     }
 
-    public Thread SelectAll(){
+    public Thread SelectAllDimSum(){
         return new Thread(new Runnable(){
             @Override
             public void run(){
@@ -149,7 +156,7 @@ public class PostgreSQL {
 
                try {
                    url = String.format(url, host, port, username);
-                   db = DriverManager.getConnection(url, username, password);
+                   Connection db = DriverManager.getConnection(url, username, password);
                    String query = "select * from public.dimsum";
                    Statement stmt = db.createStatement();
                    ResultSet rs = stmt.executeQuery(query);
@@ -173,6 +180,46 @@ public class PostgreSQL {
                    this.notify();
                }
            }
+        });
+    }
+
+    public Thread SelectDimSum(String tag){
+        return new Thread(new Runnable(){
+            @Override
+            public void run(){
+                try{
+                    Class.forName("org.postgresql.Driver");
+                }catch (ClassNotFoundException e) {
+                    System.out.println(e.getMessage());
+                }
+
+                try {
+                    url = String.format(url, host, port, username);
+                    Connection db = DriverManager.getConnection(url, username, password);
+                    String query = "select * from public.dimsum where tag = ?";
+                    PreparedStatement pstmt = db.prepareStatement(query);
+                    pstmt.setString(1, tag);
+                    ResultSet rs = pstmt.executeQuery();
+
+                    while (rs.next()) {
+                        int id = rs.getInt("id");
+                        String name = rs.getString("name");
+                        String imageUrl = rs.getString("imageurl");
+                        String tag = rs.getString("tag");
+                        int recipeid = rs.getInt("recipeid");
+                        int rating = rs.getInt("rating");
+                        dimsums.add(new DimSum(id, name, imageUrl, tag, recipeid, rating ));
+                    }
+                } catch (Exception e) {
+                    System.out.print(e.getMessage());
+                    e.printStackTrace();
+                }
+                finishFlag = true;
+
+                synchronized (this) {
+                    this.notify();
+                }
+            }
         });
     }
 

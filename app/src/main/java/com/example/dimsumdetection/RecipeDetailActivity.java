@@ -45,7 +45,7 @@ public class RecipeDetailActivity extends AppCompatActivity {
         int recipeid = intent.getExtras().getInt("RecipeID");
 
         try {
-            PostgreSQL postgreSQL = new PostgreSQL();
+            PostgreSQL postgreSQL = new PostgreSQL(this);
             Thread thread1 = new Thread(postgreSQL.SelectRecipe(recipeid));
             thread1.start();
             TimeUnit.SECONDS.sleep(1);

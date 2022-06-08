@@ -1,5 +1,6 @@
 package com.example.dimsumdetection.ui.home;
 
+import android.app.ProgressDialog;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
@@ -20,7 +21,9 @@ import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
+import androidx.navigation.NavController;
 
+import com.example.dimsumdetection.R;
 import com.example.dimsumdetection.database.PostgreSQL;
 import com.example.dimsumdetection.databinding.FragmentHomeBinding;
 import com.example.dimsumdetection.ml.Model;
@@ -39,11 +42,14 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
 
+import static androidx.navigation.fragment.NavHostFragment.findNavController;
+
 public class HomeFragment extends Fragment {
     private HomeViewModel homeViewModel;
     private FragmentHomeBinding binding;
     private Bitmap bitmap;
     private List<String> labels;
+    private NavController navController;
 
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         homeViewModel = new ViewModelProvider(this).get(HomeViewModel.class);
@@ -55,7 +61,7 @@ public class HomeFragment extends Fragment {
     @Override
     public void onViewCreated(@Nullable View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-
+        navController = findNavController(this);
         //gallery button
         binding.gallery.setOnClickListener(v -> {
             Intent intent = new Intent(Intent.ACTION_GET_CONTENT);
@@ -72,6 +78,7 @@ public class HomeFragment extends Fragment {
 
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        if(data == null) return;
         if(requestCode == 100){
             try {
                 bitmap = MediaStore.Images.Media.getBitmap(getContext().getContentResolver(), data.getData());
@@ -81,7 +88,7 @@ public class HomeFragment extends Fragment {
             }
         }else if(requestCode == 200){
             bitmap = (Bitmap)data.getExtras().get("data");
-            //classifyImage(bitmap);
+            classifyImage(bitmap);
         }
     }
 
@@ -100,11 +107,10 @@ public class HomeFragment extends Fragment {
             TensorBuffer outputFeature0 = outputs.getOutputFeature0AsTensorBuffer();
 
             int index = getIndex(outputFeature0.getFloatArray());
-            System.out.println(index);
-//            PostgreSQL postgreSQL = new PostgreSQL();
-//            Thread thread = new Thread(postgreSQL.SelectAll());
-//            thread.start();
-//            TimeUnit.SECONDS.sleep(1);
+
+            Bundle bundle = new Bundle();
+            bundle.putString("TAG", labels.get(index));
+            navController.navigate(R.id.navigation_recipe, bundle);
 
         } catch (IOException e) {
             e.printStackTrace();

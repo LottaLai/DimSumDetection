@@ -26,11 +26,18 @@ public class RecipeFragment extends Fragment {
     private RecyclerView.LayoutManager layoutManager;
     private RecipeRecyclerViewAdapter recyclerViewAdapter;
 
+    private String tag;
+    private boolean isSearch = false;
+
     private ArrayList<DimSum> dimsumList;
 
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         recipeiewModel = new ViewModelProvider(this).get(RecipeViewModel.class);
         binding = FragmentRecipeBinding.inflate(inflater, container, false);
+
+        tag = (getArguments() != null) ? getArguments().getString("TAG") : "";
+        isSearch = !tag.isEmpty() && !tag.equals("");
+
         return binding.getRoot();
     }
 
@@ -43,19 +50,25 @@ public class RecipeFragment extends Fragment {
         recyclerView.setLayoutManager(layoutManager);
 
         try {
-            PostgreSQL postgreSQL = new PostgreSQL();
-            Thread thread = new Thread(postgreSQL.SelectAll());
-            thread.start();
+            PostgreSQL postgreSQL = new PostgreSQL(getContext());
+            if(!isSearch) {
+                Thread getAll = new Thread(postgreSQL.SelectAllDimSum());
+                getAll.start();
+            }else{
+                Thread getOne = new Thread(postgreSQL.SelectDimSum(tag));
+                getOne.start();
+            }
             TimeUnit.SECONDS.sleep(1);
             dimsumList = postgreSQL.GetDimSums();
 
-            recyclerViewAdapter = new RecipeRecyclerViewAdapter(getContext(), dimsumList);
-
-            recyclerView.setAdapter(recyclerViewAdapter);
-            recyclerView.setHasFixedSize(true);
 
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
+
+        recyclerViewAdapter = new RecipeRecyclerViewAdapter(getContext(), dimsumList);
+
+        recyclerView.setAdapter(recyclerViewAdapter);
+        recyclerView.setHasFixedSize(true);
     }
 }
