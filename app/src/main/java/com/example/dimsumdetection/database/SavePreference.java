@@ -4,7 +4,7 @@ import android.content.Context;
 import android.content.SharedPreferences;
 import android.preference.PreferenceManager;
 
-import com.example.dimsumdetection.ui.recipe.DimSum;
+import com.example.dimsumdetection.object.DimSum;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 

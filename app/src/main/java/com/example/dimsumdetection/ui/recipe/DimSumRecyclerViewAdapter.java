@@ -9,6 +9,7 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.dimsumdetection.R;
+import com.example.dimsumdetection.object.DimSum;
 
 import java.util.ArrayList;
 

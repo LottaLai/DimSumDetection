@@ -5,16 +5,12 @@ import androidx.fragment.app.FragmentActivity;
 import android.content.Intent;
 import android.os.Bundle;
 
-import com.example.dimsumdetection.database.PostgreSQL;
-import com.example.dimsumdetection.ui.recipe.Restaurant;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
-
-import java.util.concurrent.TimeUnit;
 
 public class RestaurantActivity extends FragmentActivity implements OnMapReadyCallback {
     private GoogleMap mMap;

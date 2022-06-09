@@ -2,15 +2,14 @@ package com.example.dimsumdetection;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.os.Parcelable;
 import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.dimsumdetection.database.PostgreSQL;
-import com.example.dimsumdetection.ui.recipe.Recipe;
-import com.example.dimsumdetection.ui.recipe.Restaurant;
+import com.example.dimsumdetection.object.Recipe;
+import com.example.dimsumdetection.object.Restaurant;
 import com.squareup.picasso.Picasso;
 
 import java.util.concurrent.TimeUnit;
@@ -72,8 +71,6 @@ public class RecipeDetailActivity extends AppCompatActivity {
                 location.putExtra("Longitude", restaurant.getLocation().getLongitude());
                 startActivity(location);
             });
-
-
         } catch (InterruptedException e) {
             e.printStackTrace();
         }

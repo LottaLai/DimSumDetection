@@ -14,7 +14,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.example.dimsumdetection.R;
 import com.example.dimsumdetection.RecipeDetailActivity;
 import com.example.dimsumdetection.database.DataHandler;
-import com.example.dimsumdetection.database.SavePreference;
+import com.example.dimsumdetection.object.DimSum;
 import com.squareup.picasso.Picasso;
 
 public class DimSumViewHolder extends RecyclerView.ViewHolder{

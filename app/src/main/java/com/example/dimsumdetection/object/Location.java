@@ -1,4 +1,4 @@
-package com.example.dimsumdetection.ui.recipe;
+package com.example.dimsumdetection.object;
 
 public class Location{
     private double longitude;

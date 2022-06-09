@@ -5,10 +5,9 @@ import android.os.Build;
 
 import androidx.annotation.RequiresApi;
 
-import com.example.dimsumdetection.ui.recipe.DimSum;
+import com.example.dimsumdetection.object.DimSum;
 
 import java.util.ArrayList;
-import java.util.List;
 
 public class DataHandler {
     public static DataHandler INSTANCE = null;

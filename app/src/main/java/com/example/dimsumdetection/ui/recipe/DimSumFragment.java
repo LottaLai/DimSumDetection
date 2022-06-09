@@ -13,10 +13,9 @@ import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.dimsumdetection.R;
-import com.example.dimsumdetection.database.DataHandler;
 import com.example.dimsumdetection.database.PostgreSQL;
-import com.example.dimsumdetection.database.SavePreference;
 import com.example.dimsumdetection.databinding.FragmentRecipeBinding;
+import com.example.dimsumdetection.object.DimSum;
 
 import java.util.ArrayList;
 import java.util.concurrent.TimeUnit;

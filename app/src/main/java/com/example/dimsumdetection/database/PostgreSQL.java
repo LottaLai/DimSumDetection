@@ -1,18 +1,16 @@
 package com.example.dimsumdetection.database;
 
-import android.app.ProgressDialog;
 import android.content.Context;
 
-import com.example.dimsumdetection.ui.recipe.DimSum;
-import com.example.dimsumdetection.ui.recipe.Location;
-import com.example.dimsumdetection.ui.recipe.Recipe;
-import com.example.dimsumdetection.ui.recipe.Restaurant;
+import com.example.dimsumdetection.object.DimSum;
+import com.example.dimsumdetection.object.Location;
+import com.example.dimsumdetection.object.Recipe;
+import com.example.dimsumdetection.object.Restaurant;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
-import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
 
