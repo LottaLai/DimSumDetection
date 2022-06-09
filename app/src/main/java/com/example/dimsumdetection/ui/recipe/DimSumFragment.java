@@ -13,18 +13,20 @@ import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.dimsumdetection.R;
+import com.example.dimsumdetection.database.DataHandler;
 import com.example.dimsumdetection.database.PostgreSQL;
+import com.example.dimsumdetection.database.SavePreference;
 import com.example.dimsumdetection.databinding.FragmentRecipeBinding;
 
 import java.util.ArrayList;
 import java.util.concurrent.TimeUnit;
 
-public class RecipeFragment extends Fragment {
-    private RecipeViewModel recipeiewModel;
+public class DimSumFragment extends Fragment {
+    private DimSumViewModel recipeiewModel;
     private FragmentRecipeBinding binding;
     private RecyclerView recyclerView;
     private RecyclerView.LayoutManager layoutManager;
-    private RecipeRecyclerViewAdapter recyclerViewAdapter;
+    private DimSumRecyclerViewAdapter recyclerViewAdapter;
 
     private String tag;
     private boolean isSearch = false;
@@ -32,7 +34,7 @@ public class RecipeFragment extends Fragment {
     private ArrayList<DimSum> dimsumList;
 
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        recipeiewModel = new ViewModelProvider(this).get(RecipeViewModel.class);
+        recipeiewModel = new ViewModelProvider(this).get(DimSumViewModel.class);
         binding = FragmentRecipeBinding.inflate(inflater, container, false);
 
         tag = (getArguments() != null) ? getArguments().getString("TAG") : "";
@@ -66,9 +68,10 @@ public class RecipeFragment extends Fragment {
             e.printStackTrace();
         }
 
-        recyclerViewAdapter = new RecipeRecyclerViewAdapter(getContext(), dimsumList);
+        recyclerViewAdapter = new DimSumRecyclerViewAdapter(getContext(), dimsumList);
 
         recyclerView.setAdapter(recyclerViewAdapter);
         recyclerView.setHasFixedSize(true);
     }
+
 }

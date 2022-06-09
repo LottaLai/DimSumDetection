@@ -12,10 +12,10 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.dimsumdetection.R;
 
-public class RecipeViewModel extends ViewModel{
+public class DimSumViewModel extends ViewModel{
     private MutableLiveData<String> mText;
 
-    public RecipeViewModel() {
+    public DimSumViewModel() {
         mText = new MutableLiveData<>();
         mText.setValue("This is recipe fragment");
     }

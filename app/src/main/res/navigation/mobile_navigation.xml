@@ -31,7 +31,7 @@
 
     <fragment
         android:id="@+id/navigation_recipe"
-        android:name="com.example.dimsumdetection.ui.recipe.RecipeFragment"
+        android:name="com.example.dimsumdetection.ui.recipe.DimSumFragment"
         android:label="@string/title_recipe"
         tools:layout="@layout/fragment_recipe" />
 </navigation>
